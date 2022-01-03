@@ -1,0 +1,16 @@
+---
+- name: "Configure Prometheus to monitor the targets"
+  hosts: prometheus_server
+  become: true
+  vars:
+    targets: [172.31.40.28, 172.31.37.78, 172.31.32.213]
+  tasks:
+    - name: "Uploading prometheus.yml"
+      template:
+        src: prometheus.yml
+        dest: /home/prometheus-files/
+    - name: "Restarting/Enabling Prometheus"
+      service:
+        name: prometheus
+        state: restarted
+        enabled: true
